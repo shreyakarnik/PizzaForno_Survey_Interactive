@@ -276,36 +276,42 @@ var PF_SRC  = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0Z
   var RES = {
     pfx_outdoor: {
       type:"single", brand:"pfx", tag:"Outdoor Specialist", name:"PFX", model:"Outdoor Kiosk",
+      model_img:"images/pfx-outdoor.png",
       desc:"The PFX Outdoor Kiosk is engineered for open-air environments - weather-sealed, vandal-resistant and built to perform in any climate, 365 days a year. As the Pizza Automation Experts, PFX delivers industrial-grade reliability.",
       whys:[{i:"&#127783;",t:"All-weather sealed"},{i:"&#128274;",t:"Vandal-resistant"},{i:"&#10052;",t:"Cold-climate rated"}],
       key:"pfx_outdoor"
     },
     pfx_atm: {
       type:"single", brand:"pfx", tag:"Compact Automation", name:"PFX", model:"ATM Kiosk",
+      model_img:"images/pfx-atm.png",
       desc:"The PFX ATM Kiosk slots into tight footprints and runs 24/7 without staff. Designed to fit through a standard doorway, it delivers fully automated pizza vending for offices, dorms and any unmanned location.",
       whys:[{i:"&#128682;",t:"Fits any doorway"},{i:"&#129302;",t:"Fully autonomous"},{i:"&#128336;",t:"24/7 operation"}],
       key:"pfx_atm"
     },
     pfx_indoor: {
       type:"single", brand:"pfx", tag:"Indoor Powerhouse", name:"PFX", model:"Indoor Kiosk",
+      model_img:"images/pfx-indoor.png",
       desc:"The PFX Indoor Kiosk is built for high-volume indoor venues - arenas, airports, food courts and campuses. Industrial throughput with a sleek premium footprint for operators who need to handle serious demand.",
       whys:[{i:"&#9889;",t:"High throughput"},{i:"&#128202;",t:"Remote monitoring"},{i:"&#127942;",t:"Premium build"}],
       key:"pfx_indoor"
     },
     pf_outdoor: {
       type:"single", brand:"pf", tag:"Outdoor Classic", name:"PizzaForno", model:"Outdoor Kiosk",
+      model_img:"images/pf-outdoor.png",
       desc:"PizzaForno Outdoor Kiosk brings the world's most recognised pizza vending brand to open-air locations. The trusted flame logo drives impulse purchases - paired with proven outdoor durability for parks, events and transit hubs.",
       whys:[{i:"&#128293;",t:"Trusted global brand"},{i:"&#9728;",t:"Outdoor rated"},{i:"&#127829;",t:"Impulse-buy appeal"}],
       key:"pf_outdoor"
     },
     pf_atm: {
       type:"single", brand:"pf", tag:"Compact Classic", name:"PizzaForno", model:"ATM Kiosk",
+      model_img:"images/pf-atm.png",
       desc:"PizzaForno ATM Kiosk puts the world's most iconic pizza vending brand into a compact, fully autonomous unit. Perfect for hotels, apartment lobbies and venues where space is tight but the brand name drives footfall.",
       whys:[{i:"&#127885;",t:"Brand-driven sales"},{i:"&#128682;",t:"Compact footprint"},{i:"&#128564;",t:"Runs unmanned"}],
       key:"pf_atm"
     },
     pf_indoor: {
       type:"single", brand:"pf", tag:"Indoor Classic", name:"PizzaForno", model:"Indoor Kiosk",
+      model_img:"images/pfx-indoor.png",
       desc:"PizzaForno Indoor Kiosk is the world's most recognised pizza vending solution. The iconic brand draws customers in while delivering consistently fresh, hot pizza. Ideal for food courts, malls and entertainment venues.",
       whys:[{i:"&#128293;",t:"World-famous brand"},{i:"&#127978;",t:"Mall and food court ready"},{i:"&#128200;",t:"Proven ROI"}],
       key:"pf_indoor"
@@ -398,6 +404,7 @@ var PF_SRC  = "data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0Z
       html += "<br><span class=\"res-tag\">" + r.tag + "</span>";
       html += "<div class=\"res-name\">" + r.name + "</div>";
       html += "<div class=\"res-model\">&#8212; " + r.model + " &#8212;</div>";
+      html += "<img src=\"" + r.model_img + "\" alt=\"" + r.model + "\" style=\"width:100%;max-width:420px;border-radius:16px;margin:16px auto 24px;display:block;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">";
       html += "<p class=\"res-desc\">" + r.desc + "</p>";
       html += "<div class=\"why-row\">";
       for (var i = 0; i < r.whys.length; i++) {
