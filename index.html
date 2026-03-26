@@ -414,7 +414,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
       html += "<br><span class=\"res-tag\">" + r.tag + "</span>";
       html += "<div class=\"res-name\">" + r.name + "</div>";
       html += "<div class=\"res-model\">&#8212; " + r.model + " &#8212;</div>";
-      html += "<img src=\"" + r.model_img + "\" alt=\"" + r.model + "\" style=\"width:100%;max-width:420px;border-radius:16px;margin:16px auto 24px;display:block;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">";
+      html += '<img src="' + r.model_img + '" class="res-hero-img" alt="' + r.model + '">';
       html += "<p class=\"res-desc\">" + r.desc + "</p>";
       html += "<div class=\"why-row\">";
       for (var i = 0; i < r.whys.length; i++) {
