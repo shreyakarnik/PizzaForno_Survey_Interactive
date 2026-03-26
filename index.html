@@ -28,7 +28,8 @@ html,body { height:100%; overflow:hidden; font-family:'Inter',sans-serif; backgr
   margin: 0 auto 30px;
   display: block;
   border-radius: 12px;
-  filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
+}
   
 /* subtle background pattern */
 body::before { content:''; position:fixed; inset:0; pointer-events:none;
@@ -320,7 +321,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
     },
     pf_indoor: {
       type:"single", brand:"pf", tag:"Indoor Classic", name:"PizzaForno", model:"Indoor Kiosk",
-      model_img:"image/pfx-indoor.png",
+      model_img:"image/pf-indoor.png",
       desc:"PizzaForno Indoor Kiosk is the world's most recognised pizza vending solution. The iconic brand draws customers in while delivering consistently fresh, hot pizza. Ideal for food courts, malls and entertainment venues.",
       whys:[{i:"&#128293;",t:"Compact Space"},{i:"&#127978;",t:"Any Food Court Ready"},{i:"&#128200;",t:"Proven ROI"}],
       key:"pf_indoor"
@@ -408,9 +409,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
       html += "<div class=\"comp-card\"><img src=\"" + PFX_SRC + "\" alt=\"PFX\"><span class=\"ctag ctag-r\">Industrial Grade</span><h4>PFX Indoor Kiosk</h4><p>Best for operators who need proven industrial throughput. Purpose-built for high-demand environments with full remote monitoring.</p></div>";
       html += "<div class=\"comp-card\"><img src=\"" + PF_SRC + "\" alt=\"PizzaForno\"><span class=\"ctag ctag-g\">Brand Recognition</span><h4>PizzaForno Indoor Kiosk</h4><p>Best if the brand name is your growth lever. The PizzaForno logo is globally trusted and drives impulse purchases on its own.</p></div>";
       html += "</div>";
-    if (r.model_img) {
-    html += `<img src="${r.model_img}" class="res-hero-img" alt="${r.model}">`;
-    }
+   
     } else {
       html += "<div class=\"brand-badge\"><img src=\"" + logoSrc + "\" alt=\"" + r.name + "\"></div>";
       html += "<br><span class=\"res-tag\">" + r.tag + "</span>";
