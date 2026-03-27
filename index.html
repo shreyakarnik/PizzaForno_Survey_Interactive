@@ -26,7 +26,15 @@ margin: 0 auto 30px;
 display: block;
 border-radius: 12px;
   filter: drop-shadow(0 0px 0px rgba(0,0,0,0));
+
+    .btn-roi {
+  display:block; margin:16px auto 0; background:white;
+  border:2px solid #c00022; color:#c00022; border-radius:12px;
+  padding:15px 36px; font-family:'Inter',sans-serif; font-size:15px;
+  font-weight:700; cursor:pointer; transition:all 0.2s;
 }
+.btn-roi:hover { background:#fff0f2; transform:translateY(-2px); }
+
 * { box-sizing:border-box; margin:0; padding:0; -webkit-font-smoothing:antialiased; }
 html,body { height:100%; overflow:hidden; font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); touch-action:manipulation; }
   
@@ -425,6 +433,8 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
     html += "<div class=\"res-actions\">";
     html += "<button class=\"btn-red\" id=\"btn-restart\">&#8592; Start Over</button>";
     html += "<button class=\"btn-ghost\" id=\"btn-learn\">Learn More &#8599;</button>";
+    html += "</div>";
+    html += "<button class=\"btn-roi\" id=\"btn-roi\" onclick=\"document.getElementById('roi-modal').style.display='flex'\">&#128200; Calculate My ROI</button>";
     html += "</div></div>";
     html += "<p style=\"margin-top:16px;font-size:11px;color:var(--muted);text-align:center;\">Your results are saved. A team member will be in touch.</p>";
     document.getElementById("s-result").innerHTML = html;
@@ -517,6 +527,161 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
   document.getElementById("btn-export").addEventListener("click", exportCSV);
 
 })();
+</script>
+  <!-- ROI Modal -->
+<div id="roi-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:800;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:white;border-radius:20px;width:100%;max-width:660px;max-height:90vh;overflow-y:auto;padding:32px 28px;position:relative;">
+    <button onclick="document.getElementById('roi-modal').style.display='none'" style="position:absolute;top:16px;right:16px;background:#c00022;border:none;color:white;width:32px;height:32px;border-radius:50%;font-size:14px;cursor:pointer;font-weight:700;">&#x2715;</button>
+    <div style="font-size:20px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px;">ROI Estimator</div>
+    <div style="font-size:13px;color:#888;margin-bottom:24px;">Estimate your potential return based on your location and setup.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px;" id="roi-machine-tabs">
+      <div class="roi-tab active" id="rtab-atm" onclick="setRoiMachine('atm')" style="border:1.5px solid #c00022;background:#fff0f2;color:#c00022;border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;">ATM Kiosk<span style="display:block;font-size:11px;font-weight:400;opacity:0.7;">from $88,900</span></div>
+      <div class="roi-tab" id="rtab-indoor" onclick="setRoiMachine('indoor')" style="border:1.5px solid rgba(0,0,0,0.1);background:#f8f9fa;color:#888;border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;">Indoor Kiosk<span style="display:block;font-size:11px;font-weight:400;">from $100,268</span></div>
+      <div class="roi-tab" id="rtab-outdoor" onclick="setRoiMachine('outdoor')" style="border:1.5px solid rgba(0,0,0,0.1);background:#f8f9fa;color:#888;border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;">Outdoor Kiosk<span style="display:block;font-size:11px;font-weight:400;">from $114,429</span></div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.07);">Revenue Assumptions</div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:500;">Pizzas sold per day<span style="display:block;font-size:11px;color:#aaa;font-weight:400;">Estimated daily unit sales</span></div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">qty</span>
+        <input id="r-ppd" type="number" value="40" min="1" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:500;">Average sell price per pizza</div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
+        <input id="r-price" type="number" value="12" min="1" step="0.5" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.07);">Variable Costs</div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:500;">Avg pizza cost (ingredients)</div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
+        <input id="r-pcost" type="number" value="4.50" min="0" step="0.25" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:500;">Payment processing fee<span style="display:block;font-size:11px;color:#aaa;font-weight:400;">% of revenue</span></div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">%</span>
+        <input id="r-cc" type="number" value="2.5" min="0" max="10" step="0.1" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.07);margin-top:20px;">Monthly Operating Costs</div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:500;">Location rent</div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
+        <input id="r-rent" type="number" value="0" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:500;">Electricity</div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
+        <input id="r-elec" type="number" value="108" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:500;">Maintenance plan<span style="display:block;font-size:11px;color:#aaa;font-weight:400;">Optional after year 1</span></div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
+        <input id="r-maint" type="number" value="0" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
+
+    <div style="background:#f8f9fa;border-radius:14px;padding:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:16px;">Your Estimated Returns</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:white;border-radius:10px;padding:14px 16px;border:1px solid rgba(0,0,0,0.07);">
+          <div style="font-size:11px;color:#888;font-weight:500;margin-bottom:4px;">Monthly Revenue</div>
+          <div id="r-out-rev" style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#3c3939;">$0</div>
+        </div>
+        <div style="background:white;border-radius:10px;padding:14px 16px;border:1px solid rgba(0,0,0,0.07);">
+          <div style="font-size:11px;color:#888;font-weight:500;margin-bottom:4px;">Monthly Gross Profit</div>
+          <div id="r-out-gp" style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#3c3939;">$0</div>
+        </div>
+        <div style="background:white;border-radius:10px;padding:14px 16px;border:1px solid rgba(0,0,0,0.07);">
+          <div style="font-size:11px;color:#888;font-weight:500;margin-bottom:4px;">Monthly Net Earnings</div>
+          <div id="r-out-mnet" style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#3c3939;">$0</div>
+        </div>
+        <div style="background:white;border-radius:10px;padding:14px 16px;border:1px solid rgba(0,0,0,0.07);">
+          <div style="font-size:11px;color:#888;font-weight:500;margin-bottom:4px;">Annual Net Earnings</div>
+          <div id="r-out-anet" style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#3c3939;">$0</div>
+        </div>
+        <div style="background:#fff0f2;border-radius:10px;padding:14px 16px;border:1.5px solid #c00022;grid-column:1/-1;">
+          <div style="font-size:11px;color:#888;font-weight:500;margin-bottom:4px;">Total Start-up Cost</div>
+          <div id="r-out-startup" style="font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#c00022;">$88,900</div>
+        </div>
+        <div style="background:#f0faf4;border-radius:10px;padding:14px 16px;border:1.5px solid #0c582a;grid-column:1/-1;">
+          <div style="font-size:11px;color:#888;font-weight:500;margin-bottom:4px;">Estimated Annual ROI</div>
+          <div id="r-out-roi" style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#0c582a;">0.0%</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#aaa;text-align:center;margin-top:16px;line-height:1.6;">* Estimates only. Actual results vary by location, pricing, and operations.</p>
+  </div>
+</div>
+
+<script>
+var ROI_MACHINES = { atm:88900, indoor:100268, outdoor:114429 };
+var roiMachine = 'atm';
+function setRoiMachine(t) {
+  roiMachine = t;
+  ['atm','indoor','outdoor'].forEach(function(m) {
+    var el = document.getElementById('rtab-'+m);
+    if (m === t) {
+      el.style.border='1.5px solid #c00022'; el.style.background='#fff0f2'; el.style.color='#c00022';
+    } else {
+      el.style.border='1.5px solid rgba(0,0,0,0.1)'; el.style.background='#f8f9fa'; el.style.color='#888';
+    }
+  });
+  calcRoi();
+}
+function roiFmt(n) {
+  var abs = Math.abs(n);
+  var s = '$' + Math.round(abs).toLocaleString();
+  return n < 0 ? '(' + s + ')' : s;
+}
+function calcRoi() {
+  var ppd   = parseFloat(document.getElementById('r-ppd').value)   || 0;
+  var price = parseFloat(document.getElementById('r-price').value) || 0;
+  var pcost = parseFloat(document.getElementById('r-pcost').value) || 0;
+  var cc    = parseFloat(document.getElementById('r-cc').value)    || 0;
+  var rent  = parseFloat(document.getElementById('r-rent').value)  || 0;
+  var elec  = parseFloat(document.getElementById('r-elec').value)  || 0;
+  var maint = parseFloat(document.getElementById('r-maint').value) || 0;
+  var pm = ppd * 30;
+  var rev = pm * price;
+  var cogs = pm * (pcost + 0.83);
+  var ccfee = rev * (cc/100);
+  var gp = rev - cogs - ccfee;
+  var opex = rent + elec + maint;
+  var mnet = gp - opex;
+  var anet = mnet * 12;
+  var startup = ROI_MACHINES[roiMachine];
+  var roi = startup > 0 ? (anet/startup)*100 : 0;
+  document.getElementById('r-out-rev').textContent = roiFmt(rev);
+  document.getElementById('r-out-gp').textContent = roiFmt(gp);
+  var mnetEl = document.getElementById('r-out-mnet');
+  mnetEl.textContent = roiFmt(mnet); mnetEl.style.color = mnet < 0 ? '#c00022' : '#0c582a';
+  var anetEl = document.getElementById('r-out-anet');
+  anetEl.textContent = roiFmt(anet); anetEl.style.color = anet < 0 ? '#c00022' : '#0c582a';
+  document.getElementById('r-out-startup').textContent = roiFmt(startup);
+  var roiEl = document.getElementById('r-out-roi');
+  roiEl.textContent = roi.toFixed(1) + '%';
+  roiEl.style.color = roi < 0 ? '#c00022' : '#0c582a';
+  var roiBox = roiEl.parentElement;
+  roiBox.style.background = roi < 0 ? '#fff0f2' : '#f0faf4';
+  roiBox.style.borderColor = roi < 0 ? '#c00022' : '#0c582a';
+}
+calcRoi();
 </script>
 </body>
 </html>
