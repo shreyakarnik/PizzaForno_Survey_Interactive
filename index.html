@@ -582,6 +582,14 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
         <input id="r-rent" type="number" value="0" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
       </div>
     </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.07);margin-top:20px;">Monthly Operating Costs</div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:500;">Unit insurance</div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
+        <input id="r-unit" type="number" value="100" min="100" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
       <div style="font-size:14px;font-weight:500;">Electricity</div>
       <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
@@ -593,7 +601,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
       <div style="font-size:14px;font-weight:500;">Maintenance plan<span style="display:block;font-size:11px;color:#aaa;font-weight:400;">Optional after year 1</span></div>
       <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
         <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
-        <input id="r-maint" type="number" value="0" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+        <input id="r-maint" type="number" value="85" min="85" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
       </div>
     </div>
 
@@ -631,7 +639,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
 </div>
 
 <script>
-var ROI_MACHINES = { atm:88900, indoor:100268, outdoor:114429 };
+var ROI_MACHINES = { atm:86078, indoor:98216, outdoor:109617 };
 var roiMachine = 'atm';
 function setRoiMachine(t) {
   roiMachine = t;
@@ -656,8 +664,9 @@ function calcRoi() {
   var pcost = parseFloat(document.getElementById('r-pcost').value) || 0;
   var cc    = parseFloat(document.getElementById('r-cc').value)    || 0;
   var rent  = parseFloat(document.getElementById('r-rent').value)  || 0;
+  var unit  = parseFloat(document.getElementById('r-unit').value)  || 100;
   var elec  = parseFloat(document.getElementById('r-elec').value)  || 0;
-  var maint = parseFloat(document.getElementById('r-maint').value) || 0;
+  var maint = parseFloat(document.getElementById('r-maint').value) || 85;
   var pm = ppd * 30;
   var rev = pm * price;
   var cogs = pm * (pcost + 0.83);
