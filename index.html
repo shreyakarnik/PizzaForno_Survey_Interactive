@@ -431,11 +431,11 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
       }
       html += "</div>";
     }
+    html += "<button class=\"btn-roi\" id=\"btn-roi\" onclick=\"document.getElementById('roi-modal').style.display='flex'\">&#128200; Calculate My ROI</button>";
     html += "<div class=\"res-actions\">";
     html += "<button class=\"btn-red\" id=\"btn-restart\">&#8592; Start Over</button>";
     html += "<button class=\"btn-ghost\" id=\"btn-learn\">Learn More &#8599;</button>";
     html += "</div>";
-    html += "<button class=\"btn-roi\" id=\"btn-roi\" onclick=\"document.getElementById('roi-modal').style.display='flex'\">&#128200; Calculate My ROI</button>";
     html += "</div></div>";
     html += "<p style=\"margin-top:16px;font-size:11px;color:var(--muted);text-align:center;\">Your results are saved. A team member will be in touch.</p>";
     document.getElementById("s-result").innerHTML = html;
