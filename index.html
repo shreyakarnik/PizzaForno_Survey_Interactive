@@ -431,7 +431,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
       }
       html += "</div>";
     }
-    html += "<button class=\"btn-roi\" id=\"btn-roi\" onclick=\"document.getElementById('roi-modal').style.display='flex'\">&#128200; Calculate My ROI</button>";
+    html += "<button class=\"btn-roi\" id=\"btn-roi\" onclick=\"openRoiModal('" + r.brand + "')\">&#128200; Calculate My ROI</button>";
     html += "<div class=\"res-actions\">";
     html += "<button class=\"btn-red\" id=\"btn-restart\">&#8592; Start Over</button>";
     html += "<button class=\"btn-ghost\" id=\"btn-learn\">Learn More &#8599;</button>";
@@ -558,12 +558,11 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
       </div>
     </div>
 
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.07);">Variable Costs</div>
     <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
-      <div style="font-size:14px;font-weight:500;">Avg pizza cost (ingredients)</div>
+      <div style="font-size:14px;font-weight:500;"><span id="r-pcost-label">Pizza box cost</span></div>
       <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
         <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
-        <input id="r-pcost" type="number" value="4.50" min="0" step="0.25" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+        <input id="r-pcost" type="number" value="0.74" min="0" step="0.01" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
@@ -573,34 +572,20 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
         <input id="r-cc" type="number" value="2.5" min="0" max="10" step="0.1" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
       </div>
     </div>
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:500;">Waste<span style="display:block;font-size:11px;color:#aaa;font-weight:400;">% of revenue lost to waste</span></div>
+      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
+        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">%</span>
+        <input id="r-waste" type="number" value="2" min="0" max="50" step="0.5" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
+      </div>
+    </div>
 
     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,0.07);margin-top:20px;">Monthly Operating Costs</div>
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:20px;">
       <div style="font-size:14px;font-weight:500;">Location rent</div>
       <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
         <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
         <input id="r-rent" type="number" value="0" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
-      <div style="font-size:14px;font-weight:500;">Unit insurance</div>
-      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
-        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
-        <input id="r-unit" type="number" value="100" min="100" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:12px;">
-      <div style="font-size:14px;font-weight:500;">Electricity</div>
-      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
-        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
-        <input id="r-elec" type="number" value="108" min="0" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;margin-bottom:20px;">
-      <div style="font-size:14px;font-weight:500;">Maintenance plan<span style="display:block;font-size:11px;color:#aaa;font-weight:400;">Optional after year 1</span></div>
-      <div style="display:flex;align-items:center;background:#f8f9fa;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;width:130px;">
-        <span style="padding:10px 10px 10px 12px;font-size:14px;font-weight:600;color:#888;background:#f0f1f3;border-right:1px solid rgba(0,0,0,0.08);">$</span>
-        <input id="r-maint" type="number" value="85" min="85" style="border:none;background:transparent;outline:none;padding:10px;font-size:14px;font-weight:600;color:#3c3939;font-family:'Inter',sans-serif;width:100%;text-align:right;" oninput="calcRoi()">
       </div>
     </div>
 
@@ -639,6 +624,88 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
 
 <script>
 var ROI_MACHINES = { atm:86078, indoor:98216, outdoor:109617 };
+var roiMachine = 'atm';
+var roiBrand = 'pf'; // 'pf' or 'pfx'
+
+function openRoiModal(brand) {
+  roiBrand = brand || 'pf';
+  var isPFX = (roiBrand === 'pfx');
+
+  // Set defaults based on brand
+  document.getElementById('r-price').value  = isPFX ? '3.00'  : '5.30';
+  document.getElementById('r-pcost').value  = isPFX ? '0.74'  : '0.00'; // box cost (PF = included)
+  document.getElementById('r-waste').value  = '2';
+
+  // Update label
+  document.getElementById('r-pcost-label').textContent = isPFX
+    ? 'Pizza box cost'
+    : 'Pizza box cost (included in price)';
+  document.getElementById('r-pcost').disabled = !isPFX;
+  document.getElementById('r-pcost').style.opacity = isPFX ? '1' : '0.45';
+
+  calcRoi();
+  document.getElementById('roi-modal').style.display = 'flex';
+}
+
+function setRoiMachine(t) {
+  roiMachine = t;
+  ['atm','indoor','outdoor'].forEach(function(m) {
+    var el = document.getElementById('rtab-'+m);
+    if (m === t) {
+      el.style.border='1.5px solid #c00022'; el.style.background='#fff0f2'; el.style.color='#c00022';
+    } else {
+      el.style.border='1.5px solid rgba(0,0,0,0.1)'; el.style.background='#f8f9fa'; el.style.color='#888';
+    }
+  });
+  calcRoi();
+}
+
+function roiFmt(n) {
+  var abs = Math.abs(n);
+  var s = '$' + Math.round(abs).toLocaleString();
+  return n < 0 ? '(' + s + ')' : s;
+}
+
+function calcRoi() {
+  var ppd   = parseFloat(document.getElementById('r-ppd').value)   || 0;
+  var price = parseFloat(document.getElementById('r-price').value) || 0;
+  var pcost = parseFloat(document.getElementById('r-pcost').value) || 0;
+  var cc    = parseFloat(document.getElementById('r-cc').value)    || 0;
+  var waste = parseFloat(document.getElementById('r-waste').value) || 0;
+  var rent  = parseFloat(document.getElementById('r-rent').value)  || 0;
+
+  var pm  = ppd * 30;
+  var rev = pm * price;
+
+  // For PF, box cost is 0 (included). For PFX, box cost is separate.
+  var isPFX = (roiBrand === 'pfx');
+  var boxCost = isPFX ? pcost : 0;
+  var cogs    = pm * (3.00 + boxCost + 0.83); // base ingredient cost + box + packaging
+  var ccfee   = rev * (cc / 100);
+  var wasteCost = rev * (waste / 100);
+  var gp      = rev - cogs - ccfee - wasteCost;
+  var opex    = rent;
+  var mnet    = gp - opex;
+  var anet    = mnet * 12;
+  var startup = ROI_MACHINES[roiMachine];
+  var roi     = startup > 0 ? (anet / startup) * 100 : 0;
+
+  document.getElementById('r-out-rev').textContent   = roiFmt(rev);
+  document.getElementById('r-out-gp').textContent    = roiFmt(gp);
+  var mnetEl = document.getElementById('r-out-mnet');
+  mnetEl.textContent = roiFmt(mnet); mnetEl.style.color = mnet < 0 ? '#c00022' : '#0c582a';
+  var anetEl = document.getElementById('r-out-anet');
+  anetEl.textContent = roiFmt(anet); anetEl.style.color = anet < 0 ? '#c00022' : '#0c582a';
+  document.getElementById('r-out-startup').textContent = roiFmt(startup);
+  var roiEl = document.getElementById('r-out-roi');
+  roiEl.textContent = roi.toFixed(1) + '%';
+  roiEl.style.color = roi < 0 ? '#c00022' : '#0c582a';
+  var roiBox = roiEl.parentElement;
+  roiBox.style.background   = roi < 0 ? '#fff0f2' : '#f0faf4';
+  roiBox.style.borderColor  = roi < 0 ? '#c00022' : '#0c582a';
+}
+
+calcRoi();
 var roiMachine = 'atm';
 function setRoiMachine(t) {
   roiMachine = t;
