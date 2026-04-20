@@ -321,7 +321,7 @@ var PF_SRC  = "PizzaForno_Logo_Colour.png";
 // FIX #3: Separate machine prices for PF vs PFX
 var ROI_MACHINES = {
   pf:  { atm: 86078,  indoor: 98216,  outdoor: 109617 },
-  pfx: { atm: 95000,  indoor: 108000, outdoor: 120000 }
+  pfx: { atm: 86078,  indoor: 98216, outdoor: 109617 }
 };
 
 var roiMachine = 'atm';
@@ -743,15 +743,15 @@ function openRoiModal(brand) {
   document.getElementById('rtab-outdoor-price').textContent = 'from $' + prices.outdoor.toLocaleString();
 
   // Set sensible defaults per brand
-  document.getElementById('r-price').value = isPFX ? '3.00' : '5.30';
-  document.getElementById('r-pcost').value = isPFX ? '0.74' : '0.00';
+  document.getElementById('r-price').value = isPFX ? '15.00' : '15.00';
+  document.getElementById('r-pcost').value = isPFX ? '3.00' : '5.30';
   document.getElementById('r-waste').value = '2';
 
   document.getElementById('r-pcost-label').textContent = isPFX
     ? 'Pizza box cost'
     : 'Pizza box cost (included in price)';
-  document.getElementById('r-pcost').disabled     = !isPFX;
-  document.getElementById('r-pcost').style.opacity = isPFX ? '1' : '0.45';
+  document.getElementById('r-pcost').disabled = false;
+  document.getElementById('r-pcost').style.opacity = '1';
 
   // Reset to ATM tab
   roiMachine = 'atm';
