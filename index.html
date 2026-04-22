@@ -185,9 +185,6 @@ body::before { content:''; position:fixed; inset:0; pointer-events:none;
         <div class="field"><label>First Name *</label><input id="f-first" type="text" placeholder="Jane" autocomplete="off"></div>
         <div class="field"><label>Last Name *</label><input id="f-last" type="text" placeholder="Doe" autocomplete="off"></div>
         <div class="field"><label>Email Address *</label><input id="f-email" type="email" placeholder="jane@company.com" autocomplete="off"></div>
-        <div class="field"><label>Phone Number</label><input id="f-phone" type="tel" placeholder="+1 555 000 0000" autocomplete="off"></div>
-        <div class="field full"><label>City / Location *</label><input id="f-city" type="text" placeholder="Toronto, ON" autocomplete="off"></div>
-        <div class="field full"><label>Business / Organisation</label><input id="f-company" type="text" placeholder="Your business name (optional)" autocomplete="off"></div>
       </div>
     </div>
     <button class="btn-red" id="btn-form" style="margin-top:18px;">Continue &#8594;</button>
@@ -615,7 +612,7 @@ var roiBrand   = 'pf'; // set when modal opens
     var last  = document.getElementById("f-last").value.trim();
     var email = document.getElementById("f-email").value.trim();
     var city  = document.getElementById("f-city").value.trim();
-    if (!first || !last || !email || !city) { showToast("Please complete all required fields.", "err"); return; }
+    if (!first || !last || !email) { showToast("Please complete all required fields.", "err"); return; }
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!re.test(email)) { showToast("Please enter a valid email address.", "err"); return; }
     lead = {
